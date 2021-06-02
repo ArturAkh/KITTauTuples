@@ -10,7 +10,7 @@ This repository is inspired by the setup of [CROWN](https://crown.readthedocs.io
 Latest ROOT build, e.g. provided on:
 
 ```bash
-source /cvmfs/sft-nightlies.cern.ch/lcg/views/dev3/latest/x86_64-centos7-gcc9-opt/setup.sh
+source /cvmfs/sft-nightlies.cern.ch/lcg/views/dev3/latest/x86_64-centos7-gcc10-opt/setup.sh
 
 ```
 
