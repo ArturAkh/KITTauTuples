@@ -79,27 +79,26 @@ auto GetGenMatch() {
 }
 
 auto GetDeltaR(){
-    return [](const ROOT::RVec<float> &tau_eta, const ROOT::RVec<float> &tau_phi,
+    return [](const float &tau_eta, const float &tau_phi,
               const ROOT::RVec<float> &cands_eta, const ROOT::RVec<float> &cands_phi){
-        ROOT::RVec<float> deltaR;
+        ROOT::RVec<float> taus_eta;
+        ROOT::RVec<float> taus_phi;
         for(unsigned int i =0; i < cands_eta.size(); i++){
-            ROOT::VecOps::RVec<float> cand_eta { cands_eta.at(i)};
-            ROOT::VecOps::RVec<float> cand_phi { cands_phi.at(i)};
-            deltaR = Concatenate(deltaR, ROOT::VecOps::DeltaR(tau_eta, cand_eta, tau_phi, cand_phi));
+            taus_eta.push_back(tau_eta);
+            taus_phi.push_back(tau_phi);
         }
-        return deltaR;
+        return ROOT::VecOps::DeltaR(taus_eta, cands_eta, taus_phi, cands_phi);
     };
 }
 
 auto GetDeltaPhi(){
-    return [](const ROOT::RVec<float> &tau_phi,
+    return [](const float &tau_phi,
               const ROOT::RVec<float> &cands_phi){
-        ROOT::RVec<float> deltaPhi;
+        ROOT::RVec<float> taus_phi;
         for(unsigned int i =0; i < cands_phi.size(); i++){
-            ROOT::VecOps::RVec<float> cand_phi { cands_phi.at(i)};
-            deltaPhi = Concatenate(deltaPhi, ROOT::VecOps::DeltaPhi(tau_phi, cand_phi));
+            taus_phi.push_back(tau_phi);
         }
-        return deltaPhi;
+        return ROOT::VecOps::DeltaPhi(taus_phi, cands_phi);
     };
 }
 
