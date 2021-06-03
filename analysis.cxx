@@ -39,7 +39,7 @@ void makeSnapshot(auto df, const std::string treename, const std::string outputn
                 std::vector<float>, std::vector<float>, std::vector<float>, std::vector<float>, std::vector<unsigned int>, // "muon_pt", "muon_eta", "muon_phi", "muon_mass", "muon_type"
                 std::vector<float>, std::vector<float>, std::vector<float>, std::vector<float>, // "pfCand_pt", "pfCand_eta", "pfCand_phi", "pfCand_mass",
                 std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>, // "pfCand_charge", "pfCand_tauIso", "pfCand_tauSignal", "pfCand_particleType", "pfCand_fromPV"
-                ROOT::VecOps::RVec<int>, // gen_match
+                int, // gen_match
                 ROOT::VecOps::RVec<float>, // ele_hcalOverEcal
                 ROOT::VecOps::RVec<float>, ROOT::VecOps::RVec<float>, ROOT::VecOps::RVec<float>, // ele_deltaR, ele_deltaPhi, ele_deltaEta,
                 ROOT::VecOps::RVec<float>, ROOT::VecOps::RVec<float>, ROOT::VecOps::RVec<float>, // muon_deltaR, muon_deltaPhi, muon_deltaEta,
@@ -48,9 +48,9 @@ void makeSnapshot(auto df, const std::string treename, const std::string outputn
 }
 
 auto GetGenMatch() {
-    return [](const ROOT::RVec<float> &tau_pt, const ROOT::RVec<float> &tau_eta, const ROOT::RVec<float> &tau_phi,
-              const ROOT::RVec<float> &gen_pt, const ROOT::RVec<float> &gen_eta, const ROOT::RVec<float> &gen_phi,
-              const ROOT::RVec<int> &gen_index, const ROOT::RVec<int> &gen_kind, const ROOT::RVec<int> &jet_index){
+    return [](const float &tau_pt, const float &tau_eta, const float &tau_phi,
+              const float &gen_pt, const float &gen_eta, const float &gen_phi,
+              const int &gen_index, const int &gen_kind, const int &jet_index){
         auto deltaR = ROOT::VecOps::DeltaR(tau_eta, gen_eta, tau_phi, gen_phi);
         auto deltaR_match = deltaR <= 0.2;
         auto gen_lepton_valid = gen_index >= 0;
@@ -179,11 +179,11 @@ int main(int argc, char* argv[]) {
 
     auto df_final = df_pfCand_deltaEta;
 
-    auto df_electrons = df_final.Filter([](const ROOT::RVec<int> &match){return Any(match == 1 || match == 3);}, {"gen_match"});
-    auto df_muons = df_final.Filter([](const ROOT::RVec<int> &match){return Any(match == 2 || match == 4);}, {"gen_match"});
-    auto df_taus = df_final.Filter([](const ROOT::RVec<int> &match){return Any(match == 5);}, {"gen_match"});
-    auto df_jets = df_final.Filter([](const ROOT::RVec<int> &match){return Any(match == 6);}, {"gen_match"});
-    auto df_invalid = df_final.Filter([](const ROOT::RVec<int> &match){return Any(match == 0);}, {"gen_match"});
+    auto df_electrons = df_final.Filter([](const int &match){return (match == 1 || match == 3);}, {"gen_match"});
+    auto df_muons = df_final.Filter([](const int &match){return (match == 2 || match == 4);}, {"gen_match"});
+    auto df_taus = df_final.Filter([](const int &match){return (match == 5);}, {"gen_match"});
+    auto df_jets = df_final.Filter([](const int &match){return (match == 6);}, {"gen_match"});
+    auto df_invalid = df_final.Filter([](const int &match){return (match == 0);}, {"gen_match"});
 
     basefunctions::makeSnapshot(df_electrons, "taus", out + sample_name + "_electrons.root", myVarSet);
     basefunctions::makeSnapshot(df_muons, "taus", out + sample_name + "_muons.root", myVarSet);
