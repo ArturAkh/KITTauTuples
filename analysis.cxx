@@ -19,7 +19,8 @@ static std::vector<std::string> myVarSet = {"run", "lumi", "evt",
                                             "muon_pt", "muon_eta", "muon_phi", "muon_mass", "muon_type",
 
                                             "pfCand_pt", "pfCand_eta", "pfCand_phi", "pfCand_mass",
-                                            "pfCand_charge", "pfCand_tauIso", "pfCand_tauSignal", "pfCand_particleType", "pfCand_fromPV"
+                                            "pfCand_charge", "pfCand_tauIso", "pfCand_tauSignal", "pfCand_particleType", "pfCand_fromPV",
+                                            "pfCand_puppiWeight", "pfCand_puppiWeightNoLep"
 };
 
 namespace basefunctions {
@@ -39,6 +40,7 @@ void makeSnapshot(auto df, const std::string treename, const std::string outputn
                 std::vector<float>, std::vector<float>, std::vector<float>, std::vector<float>, std::vector<unsigned int>, // "muon_pt", "muon_eta", "muon_phi", "muon_mass", "muon_type"
                 std::vector<float>, std::vector<float>, std::vector<float>, std::vector<float>, // "pfCand_pt", "pfCand_eta", "pfCand_phi", "pfCand_mass",
                 std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>, std::vector<int>, // "pfCand_charge", "pfCand_tauIso", "pfCand_tauSignal", "pfCand_particleType", "pfCand_fromPV"
+                std::vector<float>, std::vector<float>, // "pfCand_puppiWeight", "pfCand_puppiWeightNoLep"
                 int, // gen_match
                 ROOT::VecOps::RVec<float>, // ele_hcalOverEcal
                 ROOT::VecOps::RVec<float>, ROOT::VecOps::RVec<float>, ROOT::VecOps::RVec<float>, // ele_deltaR, ele_deltaPhi, ele_deltaEta,
@@ -127,7 +129,8 @@ int main(int argc, char* argv[]) {
     std::string sample_name(argv[1]);
     std::cout << "Using files for sample: " << sample_name << std::endl;
     std::string folder = "/ceph/akhmet/forAndrewIsaac/prod_2018_v2/" + sample_name + "/";
-    std::string out = "/ceph/akhmet/forAndrewIsaac/prod_2018_v2_processed/";
+    std::string out = "/ceph/akhmet/forAndrewIsaac/prod_2018_v2_processed_v3/";
+    //std::string out = "./";
 
     gErrorIgnoreLevel = kError;
     ROOT::EnableImplicitMT(20);
